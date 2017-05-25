@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+	<title>Cadastro de visita</title>
+</head>
+<body>
+	<div class="container-fluid" ng-controller="visitaController">
+		<div class="page-header">
+			<h1>Agenda de visitas <small>X Corp</small></h1>
+		</div>
+		<uib-tabset active="activeJustified" justified="true">
+		    <uib-tab index="0" heading="Cadastrar visita">
+		    	<form>
+					<!-- <div class="form-group">
+						<label for="input-cliente">Nome: </label>
+						<input type="text" class="form-control" id="input-cliente">
+					</div> -->
+					<div class="form-group">
+					    <label for="select-cidade">Cidade: </label>
+					    <select class="form-control" id="select-cidade" ng-model="visita.cidade" ng-options="cidade for cidade in cidades"></select>
+				  	</div>
+
+					<label for="input-data">Data: </label>
+					<p class="input-group">
+						
+			        	<input type="text" class="form-control" uib-datepicker-popup="{{format
+			        	}}" ng-model="visita.data" is-open="popupData.opened" ng-required="true" close-text="Close" />
+			        	<span class="input-group-btn">
+			        		<button type="button" class="btn btn-default" ng-click="abrirPopupData()"><i class="glyphicon glyphicon-calendar"></i></button>
+			        	</span>
+			        </p>
+					
+					<button type="submit" class="btn btn-default" ng-click="salvar()">Cadastrar</button>
+				</form>
+			</uib-tab>
+		    <uib-tab index="1" heading="Visualizar agenda da semana">
+		    	<table class="table table-striped">
+					<tr>
+						<th>Data</th>
+						<th>Endereço</th>
+						<th>Vendedor</th>
+					</tr>
+					<tr ng-repeat="visita in visitas">
+						<td>{{visita.data | date:'dd/MM/yyyy'}}</td>
+						<td>{{visita.cidade}}</td>
+						<td>{{visita.vendedor.nome}}</td>
+					</tr>
+				</table>
+		    </uib-tab>
+		</uib-tabset>
+		
+	</div>
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/ui-bootstrap.min.js"></script>
+	<script src="js/app.module.js"></script>
+	<script src="js/controller/visitaController.js"></script>
+	<script src="js/service/visitaService.js"></script>
+	<script src="js/factory/factory.js"></script>
+	<script src="js/util.js"></script>
+</body>
+</html>
