@@ -7,8 +7,7 @@ import java.io.Serializable;
  *
  * @author Rafael Braga
  *
- * @param <P>
- *            o tipo de dado da chave primária.
+ * @param <P> o tipo de dado da chave primária.
  */
 public abstract class AbstractEntity<P extends Serializable> implements Serializable {
 

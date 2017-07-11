@@ -10,46 +10,73 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/**
+ * Entidade que representa um vendedor.
+ *
+ * @author Rafael Braga
+ */
 @Entity
 @Table
 public class Vendedor extends AbstractEntity<Long> {
 
+	/** Constante de serialização */
 	private static final long serialVersionUID = -6698253408065351312L;
 
+	/** Identificador do vendedor */
 	@Id
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	/** Nome do vendedor */
 	@Column
 	private String nome;
 
+	/** Lista de visitas agendadas para o vendedor */
 	@OneToMany(mappedBy = "vendedor")
 	private List<Visita> visitas;
 
+	/**
+	 * @return the id
+	 */
 	@Override
 	public Long getId() {
 		return this.id;
 	}
 
+	/**
+	 * @return the nome
+	 */
 	public String getNome() {
 		return this.nome;
 	}
 
-	public void setNome(String nome) {
+	/**
+	 * @param nome the nome to set
+	 */
+	public void setNome(final String nome) {
 		this.nome = nome;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+	/**
+	 * @return the visitas
+	 */
 	public List<Visita> getVisitas() {
 		return this.visitas;
 	}
 
-	public void setVisitas(List<Visita> visitas) {
+	/**
+	 * @param visitas the visitas to set
+	 */
+	public void setVisitas(final List<Visita> visitas) {
 		this.visitas = visitas;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(final Long id) {
+		this.id = id;
 	}
 
 	/*
@@ -71,7 +98,7 @@ public class Vendedor extends AbstractEntity<Long> {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}

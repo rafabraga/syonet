@@ -1,25 +1,48 @@
 package br.com.rafael.syonet.service.dto;
 
+import br.com.rafael.syonet.model.Vendedor;
+
+/**
+ * DTO da entidade {@link Vendedor}.
+ *
+ * @author Rafael Braga
+ */
 public class VendedorDTO extends AbstractDTO {
 
+	/** Constante de serialização */
 	private static final long serialVersionUID = -146828875638147759L;
 
+	/** Identificador do vendedor */
 	private Long id;
+
+	/** Nome do vendedor */
 	private String nome;
 
+	/**
+	 * @return the id
+	 */
 	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(Long id) {
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
+	/**
+	 * @return the nome
+	 */
 	public String getNome() {
 		return this.nome;
 	}
 
-	public void setNome(String nome) {
+	/**
+	 * @param nome the nome to set
+	 */
+	public void setNome(final String nome) {
 		this.nome = nome;
 	}
 
@@ -42,7 +65,7 @@ public class VendedorDTO extends AbstractDTO {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}

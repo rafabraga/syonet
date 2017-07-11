@@ -12,13 +12,10 @@ import br.com.rafael.syonet.service.dto.AbstractDTO;
  *
  * @author Rafael Braga.
  *
- * @param <E>
- *            a classe de Entidade.
- * @param <D>
- *            a classe de DTO.
+ * @param <E> a classe de Entidade.
+ * @param <D> a classe de DTO.
  */
-public abstract class AbstractConverter<E extends AbstractEntity<? extends Serializable>, D extends AbstractDTO>
-		implements Converter<E, D> {
+public abstract class AbstractConverter<E extends AbstractEntity<? extends Serializable>, D extends AbstractDTO> implements Converter<E, D> {
 
 	/**
 	 * {@inheritDoc}

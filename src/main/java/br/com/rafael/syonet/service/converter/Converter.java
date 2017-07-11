@@ -11,18 +11,15 @@ import br.com.rafael.syonet.service.dto.AbstractDTO;
  *
  * @author Rafael Braga
  *
- * @param <E>
- *            a classe da entidade.
- * @param <D>
- *            a classe de DTO.
+ * @param <E> a classe da entidade.
+ * @param <D> a classe de DTO.
  */
 public interface Converter<E extends AbstractEntity<? extends Serializable>, D extends AbstractDTO> {
 
 	/**
 	 * Converte DTO para entidade.
 	 *
-	 * @param dto
-	 *            o DTO.
+	 * @param dto o DTO.
 	 * @return a entidade.
 	 */
 	public E convertToEntity(D dto);
@@ -30,8 +27,7 @@ public interface Converter<E extends AbstractEntity<? extends Serializable>, D e
 	/**
 	 * Converte entidade para DTO.
 	 *
-	 * @param entity
-	 *            a entidade.
+	 * @param entity a entidade.
 	 * @return o DTO.
 	 */
 	public D convertToDTO(E entity);
@@ -39,8 +35,7 @@ public interface Converter<E extends AbstractEntity<? extends Serializable>, D e
 	/**
 	 * Converte uma lista de DTOs para uma lista de entidades.
 	 *
-	 * @param dtos
-	 *            a lista de DTOs.
+	 * @param dtos a lista de DTOs.
 	 * @return a lista de entidades.
 	 */
 	public List<E> convertToEntityList(List<D> dtos);
@@ -48,8 +43,7 @@ public interface Converter<E extends AbstractEntity<? extends Serializable>, D e
 	/**
 	 * Converte uma lista de entidades para uma lista de DTOs.
 	 *
-	 * @param entities
-	 *            a lista de entidades.
+	 * @param entities a lista de entidades.
 	 * @return a lista de DTOs.
 	 */
 	public List<D> convertToDTOList(List<E> entities);

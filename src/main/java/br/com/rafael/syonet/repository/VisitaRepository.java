@@ -9,6 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import br.com.rafael.syonet.model.Visita;
 
+/**
+ * Repositório para operações de {@link Visita}.
+ *
+ * @author Rafael Braga
+ */
 @Repository
 public interface VisitaRepository extends CrudRepository<Visita, Long> {
 
