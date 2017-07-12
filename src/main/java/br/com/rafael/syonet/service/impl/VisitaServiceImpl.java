@@ -1,13 +1,9 @@
 package br.com.rafael.syonet.service.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -52,7 +48,7 @@ public class VisitaServiceImpl implements VisitaService {
 	 */
 	@Override
 	public void salvar(final VisitaDTO visitaDTO) {
-		if (visitaDTO.getCidade() != null && visitaDTO.getData() != null) {
+		if (visitaDTO != null && visitaDTO.getCidade() != null && visitaDTO.getData() != null) {
 			final Visita visitaEntity = this.visitaConverter.convertToEntity(visitaDTO);
 			this.escolherVendedor(visitaEntity);
 
@@ -67,30 +63,27 @@ public class VisitaServiceImpl implements VisitaService {
 	 * @param visitaEntity a {@link Visita}.
 	 */
 	protected void escolherVendedor(final Visita visitaEntity) {
-		try {
-			// Lista todas as visitas da semana...
-			final List<Visita> visitasSemana = this.listarVisitasSemana(visitaEntity.getData());
+		// Lista todas as visitas da semana...
+		final List<Visita> visitasSemana = this.listarVisitasSemana(visitaEntity.getData(), new Sort("data"));
 
-			// ...e verifica se já existe alguma visita agendada para a cidade.
-			this.verificarJaExisteVisitaCidade(visitaEntity, visitasSemana);
+		// ...e verifica se já existe alguma visita agendada para a cidade.
+		final Vendedor vendedor = this.verificarJaExisteVisitaCidade(visitaEntity, visitasSemana);
 
-			// Se não existe visita para a cidade...
-			if (visitaEntity.getVendedor() == null) {
+		// Se não existe visita para a cidade...
+		if (vendedor == null) {
+			// ...busca todos os vendedores...
+			final List<Vendedor> vendedores = new ArrayList<>();
+			final Iterator<Vendedor> iterator = this.vendedorRepository.findAll().iterator();
+			iterator.forEachRemaining(vendedores::add);
 
-				// ...busca todos os vendedores...
-				final List<Vendedor> vendedores = new ArrayList<>();
-				final Iterator<Vendedor> iterator = this.vendedorRepository.findAll().iterator();
-				iterator.forEachRemaining(vendedores::add);
+			// ...e verifica quais entrarão para o sorteio da visita.
+			final List<Vendedor> vendedoresParaSelecao = this.listarVendedoresDisponiveisParaVisita(visitasSemana, vendedores);
 
-				// ...e verifica quais entrarão para o sorteio da visita.
-				final List<Vendedor> vendedoresParaSelecao = this.listarVendedoresDisponiveisParaVisita(visitasSemana, vendedores);
-
-				// Sorteia um vendedor.
-				final int indexSorteado = new Random().nextInt(vendedoresParaSelecao.size());
-				visitaEntity.setVendedor(vendedoresParaSelecao.get(indexSorteado));
-			}
-		} catch (final ParseException e) {
-			throw new IllegalArgumentException("Data informada é inválida!");
+			// Sorteia um vendedor.
+			final int indexSorteado = new Random().nextInt(vendedoresParaSelecao.size());
+			visitaEntity.setVendedor(vendedoresParaSelecao.get(indexSorteado));
+		} else {
+			visitaEntity.setVendedor(vendedor);
 		}
 	}
 
@@ -120,40 +113,39 @@ public class VisitaServiceImpl implements VisitaService {
 	 *
 	 * @param visitaEntity a {@link Visita} que se deseja agendar.
 	 * @param visitasSemana a lista de {@link Visita} da semana.
+	 * @return o vendedor que irá realizar visita na cidade.
 	 */
-	protected void verificarJaExisteVisitaCidade(final Visita visitaEntity, final List<Visita> visitasSemana) {
+	protected Vendedor verificarJaExisteVisitaCidade(final Visita visitaEntity, final List<Visita> visitasSemana) {
 		for (final Visita visitaSemana : visitasSemana) {
 			// Se existe uma visita agendada para a mesma cidade
 			if (visitaEntity.getCidade().equals(visitaSemana.getCidade())) {
-				final Vendedor vendedor = this.vendedorRepository.findOne(visitaSemana.getVendedor().getId());
-				// Seta o mesmo vendedor para a visita
-				visitaEntity.setVendedor(vendedor);
-				break;
+				// ...retorna o mesmo vendedor para a visita
+				return visitaSemana.getVendedor();
 			}
 		}
+		return null;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<VisitaDTO> listarVisitasSemana() throws ParseException {
-		return this.visitaConverter.convertToDTOList(this.listarVisitasSemana(new Date()));
+	public List<VisitaDTO> listarVisitasSemana() {
+		return this.visitaConverter.convertToDTOList(this.listarVisitasSemana(LocalDate.now(), new Sort("data")));
 	}
 
 	/**
 	 * Lista as visitas agendadas para a semana da data informada.
 	 *
 	 * @param dataVisita a data desejada para a visita.
+	 * @param sort a coluna para ordenação.
 	 * @return a lista de {@link Visita}.
-	 * @throws ParseException exceção lançada em caso de erro.
 	 */
-	protected List<Visita> listarVisitasSemana(final Date dataVisita) throws ParseException {
-		final LocalDate data = dataVisita.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	protected List<Visita> listarVisitasSemana(final LocalDate dataVisita, final Sort sort) {
 		final TemporalField fieldUS = WeekFields.of(Locale.US).dayOfWeek();
-		final Date dataInicial = new SimpleDateFormat("yyyy-MM-dd").parse(data.with(fieldUS, 1).toString());
-		final Date dataFinal = new SimpleDateFormat("yyyy-MM-dd").parse(data.with(fieldUS, 1).plusDays(6L).toString());
-		return this.visitaRepository.findByDataBetween(dataInicial, dataFinal, new Sort("data"));
+		final LocalDate dataInicial = dataVisita.with(fieldUS, 1);
+		final LocalDate dataFinal = dataVisita.with(fieldUS, 1).plusDays(6L);
+		return this.visitaRepository.findByDataBetween(dataInicial, dataFinal, sort);
 	}
 
 }

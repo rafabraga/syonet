@@ -1,6 +1,6 @@
 package br.com.rafael.syonet.service.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * DTO da entidade {@link VisitaDTO}.
@@ -16,7 +16,7 @@ public class VisitaDTO extends AbstractDTO {
 	private Long id;
 
 	/** Data da visita */
-	private Date data;
+	private LocalDate data;
 
 	/** Cidade onde será feita a visita */
 	private String cidade;
@@ -41,14 +41,14 @@ public class VisitaDTO extends AbstractDTO {
 	/**
 	 * @return the data
 	 */
-	public Date getData() {
+	public LocalDate getData() {
 		return this.data;
 	}
 
 	/**
 	 * @param data the data to set
 	 */
-	public void setData(final Date data) {
+	public void setData(final LocalDate data) {
 		this.data = data;
 	}
 

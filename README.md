@@ -1,8 +1,11 @@
 ## Tecnologias
 
 Java 8  
-Spring Boot 1.5.3  
+Spring Boot, Spring Data (1.5.3)  
 Maven
+JUnit, Mockito
+AngularJS 1.6.4
+Bootstrap
 
 ## Executar o código
 
@@ -19,7 +22,6 @@ Se todos os vendedores têm visitas agendadas, todos entram no sorteio.
 ## O que poderia ser diferente
 
 Implementação de validações no cadastro, tanto no front-end como no back-end;  
-Utilização de ferramentas de análise de código;  
 Modularização do projeto;  
 Melhorias na exibição das visitas, como filtros de busca e ordenação por colunas da tabela;  
 Inclusão de um campo para seleção do estado (atualmente só são listadas cidades do RS).

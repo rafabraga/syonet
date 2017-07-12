@@ -1,6 +1,6 @@
 package br.com.rafael.syonet.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  * Entidade que representa uma visita de um vendedor.
@@ -32,8 +30,7 @@ public class Visita extends AbstractEntity<Long> {
 
 	/** Data da visita */
 	@Column
-	@Temporal(TemporalType.DATE)
-	private Date data;
+	private LocalDate data;
 
 	/** Cidade onde será feita a visita */
 	@Column
@@ -61,14 +58,14 @@ public class Visita extends AbstractEntity<Long> {
 	/**
 	 * @return the data
 	 */
-	public Date getData() {
+	public LocalDate getData() {
 		return this.data;
 	}
 
 	/**
 	 * @param data the data to set
 	 */
-	public void setData(final Date data) {
+	public void setData(final LocalDate data) {
 		this.data = data;
 	}
 
@@ -102,7 +99,7 @@ public class Visita extends AbstractEntity<Long> {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -115,7 +112,7 @@ public class Visita extends AbstractEntity<Long> {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
