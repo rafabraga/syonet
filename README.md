@@ -2,9 +2,9 @@
 
 Java 8  
 Spring Boot, Spring Data (1.5.3)  
-Maven
-JUnit, Mockito
-AngularJS 1.6.4
+Maven  
+JUnit, Mockito  
+AngularJS 1.6.4  
 Bootstrap
 
 ## Executar o código
